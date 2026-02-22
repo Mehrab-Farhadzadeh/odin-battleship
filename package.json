@@ -1,0 +1,20 @@
+{
+  "name": "c-more-testing",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "babel.config.js",
+  "scripts": {
+    "test": "jest",
+    "watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "globals": "^17.3.0",
+    "jest": "^30.2.0"
+  }
+}
