@@ -17,4 +17,9 @@ describe("Ship", () => {
          ship2.hit();
       }).toThrow(new RangeError("Has already been sunk"));
    });
+
+   test("id", () => {
+      const ship2 = new Ship(2);
+      expect(ship2.id).toHaveLength(36);
+   });
 });
