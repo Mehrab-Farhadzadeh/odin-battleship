@@ -185,5 +185,36 @@ describe("Gameboard", () => {
          gameboard.addShip(length, startingPos, direction);
          expect(gameboard.isShipLeft()).toBe(true);
       });
+
+      test("add ships and sink them", () => {
+         const gameboard = new Gameboard();
+
+         // ship 1
+         let length = 4;
+         let startingPos = new Position(1, 1);
+         let direction = "down";
+         gameboard.addShip(length, startingPos, direction);
+
+         // ship 2
+         length = 5;
+         startingPos = new Position(1, 2);
+         direction = "right";
+         gameboard.addShip(length, startingPos, direction);
+
+         // sink ship 1
+         gameboard.receiveAttack(new Position(1, 1));
+         gameboard.receiveAttack(new Position(2, 1));
+         gameboard.receiveAttack(new Position(3, 1));
+         gameboard.receiveAttack(new Position(4, 1));
+
+         // sink ship 2
+         gameboard.receiveAttack(new Position(1, 2));
+         gameboard.receiveAttack(new Position(1, 3));
+         gameboard.receiveAttack(new Position(1, 4));
+         gameboard.receiveAttack(new Position(1, 5));
+         expect(gameboard.isShipLeft()).toBe(true);
+         gameboard.receiveAttack(new Position(1, 6));
+         expect(gameboard.isShipLeft()).toBe(false);
+      });
    });
 });
