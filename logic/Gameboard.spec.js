@@ -118,6 +118,59 @@ describe("Gameboard", () => {
       });
    });
 
-   test.todo("receiveAttack");
+   describe("receiveAttack", () => {
+      test("is defined", () => {
+         const gameboard = new Gameboard();
+         expect(gameboard.receiveAttack).toBeDefined();
+      });
+
+      test("attack a ship", () => {
+         const gameboard = new Gameboard();
+         const length = 4;
+         const startingPos = new Position(1, 1);
+         const direction = "down";
+         const ship4Id = gameboard.addShip(length, startingPos, direction);
+         const hittingPos = new Position(1, 1);
+         expect(gameboard.receiveAttack(hittingPos)).toEqual("HIT " + ship4Id);
+      });
+
+      test("sink a ship", () => {
+         const gameboard = new Gameboard();
+         const length = 2;
+         const startingPos = new Position(1, 1);
+         const direction = "down";
+         const ship4Id = gameboard.addShip(length, startingPos, direction);
+         const hittingPos1 = new Position(1, 1);
+         expect(gameboard.receiveAttack(hittingPos1)).toEqual("HIT " + ship4Id);
+         expect(gameboard.isShipSunk(ship4Id)).toEqual(false);
+         const hittingPos2 = new Position(2, 1);
+         expect(gameboard.receiveAttack(hittingPos2)).toEqual("HIT " + ship4Id);
+         expect(gameboard.isShipSunk(ship4Id)).toEqual(true);
+      });
+
+      test("attack the same position", () => {
+         const gameboard = new Gameboard();
+         const length = 4;
+         const startingPos = new Position(1, 1);
+         const direction = "down";
+         const ship4Id = gameboard.addShip(length, startingPos, direction);
+         const hittingPos = new Position(1, 1);
+         expect(gameboard.receiveAttack(hittingPos)).toEqual("HIT " + ship4Id);
+         expect(() => {
+            gameboard.receiveAttack(hittingPos);
+         }).toThrow(new RangeError("Attacking the hit position is invalid"));
+      });
+
+      test("attack an empty position", () => {
+         const gameboard = new Gameboard();
+         const length = 4;
+         const startingPos = new Position(1, 1);
+         const direction = "down";
+         const ship4Id = gameboard.addShip(length, startingPos, direction);
+         const hittingPos = new Position(8, 8);
+         expect(gameboard.receiveAttack(hittingPos)).toEqual("HIT EMPTY");
+      });
+   });
+
    test.todo("isShipLeft");
 });

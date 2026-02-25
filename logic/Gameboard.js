@@ -39,6 +39,23 @@ class Gameboard {
    getBoardAt(position) {
       return this.#board[position.x][position.y];
    }
+
+   receiveAttack(position) {
+      const boardSquare = this.getBoardAt(position);
+      if (boardSquare.includes("HIT")) {
+         throw new RangeError("Attacking the hit position is invalid");
+      } else if (boardSquare === "EMPTY") {
+      } else {
+         this.#ships[boardSquare].hit();
+      }
+      const attackResult = "HIT " + boardSquare;
+      this.#setBoardAt(position, attackResult);
+      return attackResult;
+   }
+
+   isShipSunk(shipId) {
+      return this.#ships[shipId].isSunk();
+   }
 }
 
 export default Gameboard;
