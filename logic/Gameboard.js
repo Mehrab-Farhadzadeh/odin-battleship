@@ -12,38 +12,15 @@ class Gameboard {
       );
    }
 
-   #getOffsetPos(direction, offset) {
-      let offsetPos;
-      switch (direction) {
-         case "up":
-            offsetPos = new Position(-offset, 0);
-            break;
-         case "right":
-            offsetPos = new Position(0, offset);
-            break;
-         case "down":
-            offsetPos = new Position(offset, 0);
-            break;
-         case "left":
-            offsetPos = new Position(0, -offset);
-            break;
-         default:
-            throw new TypeError("Invalid direction");
-      }
-      return offsetPos;
-   }
-
-   #calcPos(startingPos, direction, offset) {
-      const offsetPos = this.#getOffsetPos(direction, offset);
-      return Position.add(startingPos, offsetPos);
-   }
-
    addShip(length, startingPos, direction) {
       const newShip = new Ship(length);
       this.#ships[newShip.id] = newShip;
-      for (let offset = 0; offset < length; offset++) {
-         const shipPos = this.#calcPos(startingPos, direction, offset);
-         this.#setBoardAt(shipPos, newShip.id);
+      for (
+         let position = startingPos.clone(), i = 0;
+         i < length;
+         position.moveTo(direction, 1), i++
+      ) {
+         this.#setBoardAt(position, newShip.id);
       }
       return newShip.id;
    }
