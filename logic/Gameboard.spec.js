@@ -116,6 +116,8 @@ describe("Gameboard", () => {
             gameboard.addShip(shipLength, startingPos, direction);
          }).toThrow(new RangeError("Trying to access out of board"));
       });
+
+      test.todo("adding a new ship collides with an existing ship");
    });
 
    describe("receiveAttack", () => {
