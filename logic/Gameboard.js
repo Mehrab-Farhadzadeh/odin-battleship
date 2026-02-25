@@ -5,6 +5,7 @@ class Gameboard {
    #width;
    #board;
    #ships = {};
+   #sunkShips = 0;
    constructor(width_ = 10) {
       this.#width = width_;
       this.#board = Array.from({ length: this.#width }, () =>
@@ -47,6 +48,7 @@ class Gameboard {
       } else if (boardSquare === "EMPTY") {
       } else {
          this.#ships[boardSquare].hit();
+         if (this.#ships[boardSquare].isSunk()) this.#sunkShips++;
       }
       const attackResult = "HIT " + boardSquare;
       this.#setBoardAt(position, attackResult);
@@ -55,6 +57,10 @@ class Gameboard {
 
    isShipSunk(shipId) {
       return this.#ships[shipId].isSunk();
+   }
+
+   isShipLeft() {
+      return Object.keys(this.#ships).length - this.#sunkShips > 0;
    }
 }
 

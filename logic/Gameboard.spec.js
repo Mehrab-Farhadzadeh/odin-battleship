@@ -172,5 +172,16 @@ describe("Gameboard", () => {
       });
    });
 
-   test.todo("isShipLeft");
+   describe("isShipLeft", () => {
+      test("add a ship without attack", () => {
+         const gameboard = new Gameboard();
+
+         // ship 1
+         let length = 4;
+         let startingPos = new Position(1, 1);
+         let direction = "down";
+         gameboard.addShip(length, startingPos, direction);
+         expect(gameboard.isShipLeft()).toBe(true);
+      });
+   });
 });
