@@ -8,32 +8,6 @@ describe("Gameboard", () => {
       expect(gameboard).toBeDefined();
    });
 
-   function getOffsetPos(direction, offset) {
-      let offsetPos;
-      switch (direction) {
-         case "up":
-            offsetPos = new Position(-offset, 0);
-            break;
-         case "right":
-            offsetPos = new Position(0, offset);
-            break;
-         case "down":
-            offsetPos = new Position(offset, 0);
-            break;
-         case "left":
-            offsetPos = new Position(0, -offset);
-            break;
-         default:
-            throw new TypeError("Invalid direction");
-      }
-      return offsetPos;
-   }
-
-   function calcPos(startingPos, direction, offset) {
-      const offsetPos = getOffsetPos(direction, offset);
-      return Position.add(startingPos, offsetPos);
-   }
-
    describe("addShip", () => {
       test("addShip up", () => {
          const gameboard = new Gameboard();
@@ -41,11 +15,13 @@ describe("Gameboard", () => {
          let startingPos = new Position(6, 6);
          let shipLength = 4;
          let direction = "up";
-         
          let shipId = gameboard.addShip(shipLength, startingPos, direction);
-         for (let offset = 0; offset < shipLength; offset++) {
-            const shipPos = calcPos(startingPos, direction, offset);
-            expect(gameboard.getBoardAt(shipPos)).toEqual(shipId);
+         const shipPositions = [startingPos];
+         shipPositions.push(new Position(5, 6));
+         shipPositions.push(new Position(4, 6));
+         shipPositions.push(new Position(3, 6));
+         for (const position of shipPositions) {
+            expect(gameboard.getBoardAt(position)).toEqual(shipId);
          }
       });
 
@@ -56,9 +32,12 @@ describe("Gameboard", () => {
          let shipLength = 4;
          let direction = "right";
          let shipId = gameboard.addShip(shipLength, startingPos, direction);
-         for (let offset = 0; offset < shipLength; offset++) {
-            const shipPos = calcPos(startingPos, direction, offset);
-            expect(gameboard.getBoardAt(shipPos)).toEqual(shipId);
+         const shipPositions = [startingPos];
+         shipPositions.push(new Position(1, 2));
+         shipPositions.push(new Position(1, 3));
+         shipPositions.push(new Position(1, 4));
+         for (const position of shipPositions) {
+            expect(gameboard.getBoardAt(position)).toEqual(shipId);
          }
       });
 
@@ -69,9 +48,12 @@ describe("Gameboard", () => {
          let shipLength = 4;
          let direction = "down";
          let shipId = gameboard.addShip(shipLength, startingPos, direction);
-         for (let offset = 0; offset < shipLength; offset++) {
-            const shipPos = calcPos(startingPos, direction, offset);
-            expect(gameboard.getBoardAt(shipPos)).toEqual(shipId);
+         const shipPositions = [startingPos];
+         shipPositions.push(new Position(2, 1));
+         shipPositions.push(new Position(3, 1));
+         shipPositions.push(new Position(4, 1));
+         for (const position of shipPositions) {
+            expect(gameboard.getBoardAt(position)).toEqual(shipId);
          }
       });
 
@@ -82,9 +64,12 @@ describe("Gameboard", () => {
          let shipLength = 4;
          let direction = "left";
          let shipId = gameboard.addShip(shipLength, startingPos, direction);
-         for (let offset = 0; offset < shipLength; offset++) {
-            const shipPos = calcPos(startingPos, direction, offset);
-            expect(gameboard.getBoardAt(shipPos)).toEqual(shipId);
+         const shipPositions = [startingPos];
+         shipPositions.push(new Position(1, 5));
+         shipPositions.push(new Position(1, 4));
+         shipPositions.push(new Position(1, 3));
+         for (const position of shipPositions) {
+            expect(gameboard.getBoardAt(position)).toEqual(shipId);
          }
       });
 
