@@ -34,4 +34,27 @@ export default class Position {
       this.x -= offset;
       return this;
    }
+
+   moveTo(direction, offset) {
+      switch (direction) {
+         case "up":
+            this.x -= offset;
+            break;
+         case "right":
+            this.y += offset;
+            break;
+         case "down":
+            this.x += offset;
+            break;
+         case "left":
+            this.y -= offset;
+            break;
+         default:
+            throw new TypeError("Invalid direction");
+      }
+   }
+
+   clone() {
+      return new Position(this.x, this.y);
+   }
 }
