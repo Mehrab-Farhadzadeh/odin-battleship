@@ -117,7 +117,70 @@ describe("Gameboard", () => {
          }).toThrow(new RangeError("Trying to access out of board"));
       });
 
-      test.todo("adding a new ship collides with an existing ship");
+      test("adding a new ship collides with an existing ship", () => {
+         const gameboard = new Gameboard();
+
+         // ship 1
+         const length1 = 4;
+         const startingPos1 = new Position(1, 1);
+         const direction1 = "down";
+         const ship1Id = gameboard.addShip(length1, startingPos1, direction1);
+
+         // ship 2
+         const length2 = 5;
+         const startingPos2 = new Position(1, 0);
+         const direction2 = "right";
+         expect(() => {
+            gameboard.addShip(length2, startingPos2, direction2);
+         }).toThrow("The position is not empty");
+
+         // ship 3
+         const length3 = 4;
+         const startingPos3 = new Position(3, 3);
+         const direction3 = "right";
+         const ship3Id = gameboard.addShip(length3, startingPos3, direction3);
+
+         function isThereAShipAt(position) {
+            const shipsPositionsObj = {};
+            const ship1Positions = [];
+            for (let i = 0; i < 0 + length1; i++) {
+               const curPos = new Position(startingPos1.x + i, startingPos1.y);
+               ship1Positions.push(curPos);
+            }
+            shipsPositionsObj[ship1Id] = ship1Positions;
+
+            const ship3Positions = [];
+            for (let i = 0; i < 0 + length3; i++) {
+               const curPos = new Position(startingPos3.x, startingPos3.y + i);
+               ship3Positions.push(curPos);
+            }
+            shipsPositionsObj[ship3Id] = ship3Positions;
+
+            for (const shipIdInObj in shipsPositionsObj) {
+               if (
+                  shipsPositionsObj[shipIdInObj].find((shipPos) =>
+                     shipPos.equals(position),
+                  )
+               ) {
+                  return shipIdInObj;
+               }
+            }
+
+            return undefined;
+         }
+         // check all the board
+         for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+               const curPos = new Position(i, j);
+               const shipId = isThereAShipAt(curPos);
+               if (shipId) {
+                  expect(gameboard.getBoardAt(curPos)).toEqual(shipId);
+               } else {
+                  expect(gameboard.getBoardAt(curPos)).toEqual("EMPTY");
+               }
+            }
+         }
+      });
    });
 
    describe("receiveAttack", () => {

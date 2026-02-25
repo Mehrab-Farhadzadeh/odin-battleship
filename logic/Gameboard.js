@@ -15,7 +15,14 @@ class Gameboard {
 
    addShip(length, startingPos, direction) {
       const newShip = new Ship(length);
-      this.#ships[newShip.id] = newShip;
+      for (
+         let position = startingPos.clone(), i = 0;
+         i < length;
+         position.moveTo(direction, 1), i++
+      ) {
+         if (this.getBoardAt(position) !== "EMPTY")
+            throw new RangeError("The position is not empty");
+      }
       for (
          let position = startingPos.clone(), i = 0;
          i < length;
@@ -23,6 +30,7 @@ class Gameboard {
       ) {
          this.#setBoardAt(position, newShip.id);
       }
+      this.#ships[newShip.id] = newShip;
       return newShip.id;
    }
 
@@ -38,6 +46,14 @@ class Gameboard {
    }
 
    getBoardAt(position) {
+      if (
+         position.x < 0 ||
+         position.x >= this.#width ||
+         position.y < 0 ||
+         position.y >= this.#width
+      )
+         throw new RangeError("Trying to access out of board");
+
       return this.#board[position.x][position.y];
    }
 
